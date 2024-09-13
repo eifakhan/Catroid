@@ -69,6 +69,7 @@ class ProjectListActivityRecreateRegressionTest {
 
     @get:Rule
     var flakyTestRule = FlakyTestRule()
+
     private val projectName = "testProject"
 
     @Before

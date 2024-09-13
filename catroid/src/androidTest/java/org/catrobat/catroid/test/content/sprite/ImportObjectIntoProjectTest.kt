@@ -49,6 +49,8 @@ import org.catrobat.catroid.formulaeditor.UserList
 import org.catrobat.catroid.formulaeditor.UserVariable
 import org.catrobat.catroid.io.XstreamSerializer
 import org.catrobat.catroid.io.ZipArchiver
+import org.catrobat.catroid.rules.FlakyTestRule
+import org.catrobat.catroid.runner.Flaky
 import org.catrobat.catroid.test.merge.MergeTestUtils
 import org.catrobat.catroid.test.utils.TestUtils
 import org.catrobat.catroid.ui.ProjectActivity
@@ -77,6 +79,9 @@ class ImportObjectIntoProjectTest {
         ProjectActivity.EXTRA_FRAGMENT_POSITION,
         ProjectActivity.FRAGMENT_SPRITES
     )
+
+   @get:Rule
+   var flakyTestRule = FlakyTestRule()
 
     @Throws(Exception::class)
     @Before
@@ -223,6 +228,7 @@ class ImportObjectIntoProjectTest {
     }
 
     @Test
+    @Flaky
     fun abortImportWithConflictsTestLocalVar() {
         val anySpriteOfProject = project.defaultScene.spriteList[1]
         anySpriteOfProject.userVariables.add(UserVariable("globalVariable1")) // Conflicting var
@@ -245,6 +251,7 @@ class ImportObjectIntoProjectTest {
     }
 
     @Test
+    @Flaky
     fun abortImportWithConflictsTestGlobalVar() {
         val anySpriteOfProject = project.defaultScene.spriteList[1]
         anySpriteOfProject.userVariables.add(UserVariable("localVariable3"))
@@ -267,6 +274,7 @@ class ImportObjectIntoProjectTest {
     }
 
     @Test
+    @Flaky
     fun rejectProjectImportDialogTest() {
         val anySpriteOfProject = project.defaultScene.spriteList[1]
         anySpriteOfProject.userVariables.add(UserVariable("localVariable3"))

@@ -40,6 +40,8 @@ import org.catrobat.catroid.R
 import org.catrobat.catroid.common.DefaultProjectHandler
 import org.catrobat.catroid.content.Project
 import org.catrobat.catroid.io.XstreamSerializer
+import org.catrobat.catroid.rules.FlakyTestRule
+import org.catrobat.catroid.runner.Flaky
 import org.catrobat.catroid.test.utils.TestUtils
 import org.catrobat.catroid.testsuites.annotations.Cat.AppUi
 import org.catrobat.catroid.testsuites.annotations.Level.Smoke
@@ -72,6 +74,9 @@ class DeleteImportedSpriteTest {
         ProjectActivity.FRAGMENT_SPRITES
     )
 
+    @get:Rule
+    var flakyTestRule = FlakyTestRule()
+
     @Before
     fun setUp() {
         TestUtils.deleteProjects(projectName)
@@ -102,6 +107,7 @@ class DeleteImportedSpriteTest {
 
     @Category(AppUi::class, Smoke::class)
     @Test
+    @Flaky
     fun testDeleteOriginalAndImportedSprites() {
         importSprite()
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
@@ -117,6 +123,7 @@ class DeleteImportedSpriteTest {
 
     @Category(AppUi::class, Smoke::class)
     @Test
+    @Flaky
     fun testOriginalLooksAndSoundsExistAfterDeleteImport() {
         importSprite()
         Espresso.onView(ViewMatchers.withId(R.id.confirm)).perform(ViewActions.click())

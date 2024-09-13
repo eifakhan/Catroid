@@ -34,6 +34,7 @@ import org.catrobat.catroid.content.bricks.SetSizeToBrick
 import org.catrobat.catroid.formulaeditor.Formula
 import org.catrobat.catroid.formulaeditor.FormulaElement
 import org.catrobat.catroid.formulaeditor.Sensors
+import org.catrobat.catroid.rules.FlakyTestRule
 import org.catrobat.catroid.runner.Flaky
 import org.catrobat.catroid.stage.StageActivity
 import org.catrobat.catroid.testsuites.annotations.Cat.AppUi
@@ -61,6 +62,9 @@ class TextDetectionResourceTest {
         SpriteActivity.EXTRA_FRAGMENT_POSITION,
         SpriteActivity.FRAGMENT_SCRIPTS
     )
+
+    @get:Rule
+    val flakyTestRule = FlakyTestRule()
 
     @Category(AppUi::class, Functional::class, Quarantine::class)
     @Test

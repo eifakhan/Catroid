@@ -42,6 +42,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.catrobat.catroid.R
 import org.catrobat.catroid.common.Constants.CATROBAT_TERMS_OF_USE_ACCEPTED
 import org.catrobat.catroid.common.SharedPreferenceKeys.AGREED_TO_PRIVACY_POLICY_VERSION
+import org.catrobat.catroid.rules.FlakyTestRule
 import org.catrobat.catroid.runner.Flaky
 import org.catrobat.catroid.ui.MainMenuActivity
 import org.catrobat.catroid.ui.ProjectActivity
@@ -68,6 +69,9 @@ class CreateProjectTest {
     var baseActivityTestRule = BaseActivityTestRule(
         MainMenuActivity::class.java, false, false
     )
+
+    @get:Rule
+    val flakyTestRule = FlakyTestRule()
 
     @Before
     fun setUp() {
@@ -142,6 +146,7 @@ class CreateProjectTest {
     }
 
     @Test
+    @Flaky
     fun testCreateNewCastProject() {
         onView(withId(R.id.newProjectFloatingActionButton))
             .perform(click())
@@ -223,6 +228,7 @@ class CreateProjectTest {
     }
 
     @Test
+    @Flaky
     fun testCreateProjectWithExistingName() {
         onView(withId(R.id.newProjectFloatingActionButton))
             .perform(click())

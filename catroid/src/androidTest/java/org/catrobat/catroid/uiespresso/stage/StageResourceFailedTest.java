@@ -29,6 +29,8 @@ import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.formulaeditor.Sensors;
+import org.catrobat.catroid.rules.FlakyTestRule;
+import org.catrobat.catroid.runner.Flaky;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.testsuites.annotations.Cat;
 import org.catrobat.catroid.testsuites.annotations.Level;
@@ -57,6 +59,9 @@ public class StageResourceFailedTest {
 	public BaseActivityTestRule<StageActivity> baseActivityTestRule = new
 			BaseActivityTestRule<>(StageActivity.class, true, false);
 
+	@Rule
+	public FlakyTestRule flakyTestRule = new FlakyTestRule();
+
 	@Before
 	public void setUp() throws Exception {
 		createProject("StagePausedTest");
@@ -66,6 +71,7 @@ public class StageResourceFailedTest {
 
 	@Category({Cat.AppUi.class, Level.Smoke.class})
 	@Test
+	@Flaky
 	public void testResourceFailedDialog() {
 		baseActivityTestRule.launchActivity(null);
 

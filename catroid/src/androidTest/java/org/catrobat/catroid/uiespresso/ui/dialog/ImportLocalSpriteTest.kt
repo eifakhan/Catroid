@@ -40,6 +40,8 @@ import org.catrobat.catroid.exceptions.ProjectException
 import org.catrobat.catroid.formulaeditor.UserList
 import org.catrobat.catroid.formulaeditor.UserVariable
 import org.catrobat.catroid.io.asynctask.saveProjectSerial
+import org.catrobat.catroid.rules.FlakyTestRule
+import org.catrobat.catroid.runner.Flaky
 import org.catrobat.catroid.test.utils.TestUtils
 import org.catrobat.catroid.ui.ProjectListActivity
 import org.catrobat.catroid.uiespresso.util.rules.BaseActivityTestRule
@@ -73,6 +75,9 @@ class ImportLocalSpriteTest {
         ProjectListActivity::class.java, true, false
     )
 
+    @get:Rule
+    val flakyTestRule = FlakyTestRule()
+
     @Before
     @Throws(Exception::class)
     fun setUp() {
@@ -90,6 +95,7 @@ class ImportLocalSpriteTest {
     }
 
     @Test
+    @Flaky
     fun importObjectAndMergeGlobals() {
         Espresso.onView(ViewMatchers.withText(projectWithSameGlobals.name))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -145,6 +151,7 @@ class ImportLocalSpriteTest {
     }
 
     @Test
+    @Flaky
     fun abortImportWithConflicts() {
         Espresso.onView(ViewMatchers.withText(projectWithConflicts.name))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -172,6 +179,7 @@ class ImportLocalSpriteTest {
     }
 
     @Test
+    @Flaky
     fun importActorOrObjectTest() {
         Espresso.onView(ViewMatchers.withText(projectToImportFrom.name))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

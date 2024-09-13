@@ -32,11 +32,6 @@ import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -48,12 +43,6 @@ import dalvik.system.DexFile;
 public class AndroidPackageRunner extends ParentRunner<Runner> {
 	private static final String TAG = AndroidPackageRunner.class.getSimpleName();
 
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.TYPE)
-	@Inherited
-	public @interface PackagePath {
-		String value();
-	}
 
 	private static Class<?>[] getAllClassesInAnnotatedPath(Class<?> klass) throws InitializationError {
 		PackagePath annotation = klass.getAnnotation(PackagePath.class);

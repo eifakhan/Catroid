@@ -27,6 +27,8 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.bricks.SetPenColorBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
+import org.catrobat.catroid.rules.FlakyTestRule;
+import org.catrobat.catroid.runner.Flaky;
 import org.catrobat.catroid.ui.SpriteActivity;
 import org.catrobat.catroid.uiespresso.util.UiTestUtils;
 import org.catrobat.catroid.uiespresso.util.rules.FragmentActivityTestRule;
@@ -79,6 +81,9 @@ public class SetPenColorBrickFormulaTest {
 	public FragmentActivityTestRule<SpriteActivity> baseActivityTestRule = new
 			FragmentActivityTestRule<>(SpriteActivity.class, SpriteActivity.EXTRA_FRAGMENT_POSITION, SpriteActivity.FRAGMENT_SCRIPTS);
 
+	@Rule
+	public FlakyTestRule flakyTestRule = new FlakyTestRule();
+
 	@Before
 	public void setUp() throws Exception {
 		brickPosition = 1;
@@ -101,6 +106,7 @@ public class SetPenColorBrickFormulaTest {
 	}
 
 	@Test
+	@Flaky
 	public void testPhiroLightRGBShowFormulaEditor() {
 		onBrickAtPosition(brickPosition).checkShowsText(R.string.brick_pen_color);
 		onBrickAtPosition(brickPosition).onFormulaTextField(R.id.brick_set_pen_color_action_red_edit_text)

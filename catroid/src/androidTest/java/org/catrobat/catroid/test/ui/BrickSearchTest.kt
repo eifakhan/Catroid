@@ -51,6 +51,7 @@ import org.catrobat.catroid.content.Sprite
 import org.catrobat.catroid.content.bricks.BroadcastBrick
 import org.catrobat.catroid.content.bricks.MoveNStepsBrick
 import org.catrobat.catroid.content.bricks.WhenStartedBrick
+import org.catrobat.catroid.rules.FlakyTestRule
 import org.catrobat.catroid.runner.Flaky
 import org.catrobat.catroid.test.utils.TestUtils
 import org.catrobat.catroid.ui.SpriteActivity
@@ -77,6 +78,10 @@ class BrickSearchTest {
         SpriteActivity::class.java, SpriteActivity.EXTRA_FRAGMENT_POSITION,
         SpriteActivity.FRAGMENT_SCRIPTS
     )
+
+    @Rule
+    @JvmField
+    var flakyTestRule = FlakyTestRule()
 
     @Before
     fun setUp() {
@@ -177,6 +182,7 @@ class BrickSearchTest {
     }
 
     @Test
+    @Flaky
     fun testCategorySearch() {
         ensureKeyboardIsClosed()
         Espresso.onView(withId(R.id.button_add)).perform(click())

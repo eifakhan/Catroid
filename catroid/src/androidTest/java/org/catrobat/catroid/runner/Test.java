@@ -21,13 +21,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.catrobat.catroid.testsuites;
+package org.catrobat.catroid.runner;
 
-import org.catrobat.catroid.runner.AndroidPackageRunner;
-import org.catrobat.catroid.runner.PackagePath;
-import org.junit.runner.RunWith;
+import androidx.annotation.NonNull;
 
-@RunWith(AndroidPackageRunner.class)
-@PackagePath("org.catrobat.catroid.test")
-public class AllHeadlessTestsSuite {
+public class Test {
+	private final String className;
+	private final String methodName;
+	private final String parameterVariant;
+
+	public Test(String testClass, String methodName, String variant) {
+		this.className = testClass;
+		this.methodName = methodName;
+		this.parameterVariant = variant;
+	}
+
+	@NonNull
+	@Override
+	public String toString() {
+		return this.className + ";" + this.methodName + ";" + this.parameterVariant;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public String getParameterVariant() {
+		return parameterVariant;
+	}
 }

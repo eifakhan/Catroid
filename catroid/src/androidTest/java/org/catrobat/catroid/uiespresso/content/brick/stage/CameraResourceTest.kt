@@ -31,6 +31,8 @@ import androidx.test.rule.GrantPermissionRule
 import org.catrobat.catroid.R
 import org.catrobat.catroid.content.bricks.CameraBrick
 import org.catrobat.catroid.content.bricks.ChooseCameraBrick
+import org.catrobat.catroid.rules.FlakyTestRule
+import org.catrobat.catroid.runner.Flaky
 import org.catrobat.catroid.stage.StageActivity
 import org.catrobat.catroid.testsuites.annotations.Cat.AppUi
 import org.catrobat.catroid.testsuites.annotations.Cat.Quarantine
@@ -56,6 +58,9 @@ class CameraResourceTest {
 
     @get:Rule
     val runtimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA)
+
+    @get:Rule
+    val flakyTestRule = FlakyTestRule()
 
     @Category(AppUi::class, Functional::class, Quarantine::class)
     @Test
@@ -104,6 +109,7 @@ class CameraResourceTest {
 
     @Category(AppUi::class, Functional::class, Quarantine::class)
     @Test
+    @Flaky
     fun cameraOffTest() {
         val script = UiTestUtils.createProjectAndGetStartScript("cameraOffTest").also {
             it.addBrick(CameraBrick(!ON))

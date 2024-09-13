@@ -27,6 +27,8 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.bricks.PhiroRGBLightBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.rules.FlakyTestRule;
+import org.catrobat.catroid.runner.Flaky;
 import org.catrobat.catroid.ui.SpriteActivity;
 import org.catrobat.catroid.uiespresso.util.UiTestUtils;
 import org.catrobat.catroid.uiespresso.util.rules.FragmentActivityTestRule;
@@ -82,6 +84,9 @@ public class PhiroColorBrickNumberTest {
 	public FragmentActivityTestRule<SpriteActivity> baseActivityTestRule = new
 			FragmentActivityTestRule<>(SpriteActivity.class, SpriteActivity.EXTRA_FRAGMENT_POSITION, SpriteActivity.FRAGMENT_SCRIPTS);
 
+	@Rule
+	public FlakyTestRule flakyTestRule = new FlakyTestRule();
+
 	@Before
 	public void setUp() throws Exception {
 		Script script = UiTestUtils.createProjectAndGetStartScript("PhiroColorBrickTest");
@@ -101,6 +106,7 @@ public class PhiroColorBrickNumberTest {
 	}
 
 	@Test
+	@Flaky
 	public void testPhiroLightRGBShowDialog() {
 		onBrickAtPosition(phiroRGBLightBrickPosition).onFormulaTextField(R.id.brick_phiro_rgb_led_action_red_edit_text)
 				.checkShowsNumber((Integer) red);

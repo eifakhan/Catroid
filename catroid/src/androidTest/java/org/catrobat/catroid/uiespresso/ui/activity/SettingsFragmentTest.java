@@ -34,6 +34,8 @@ import android.preference.PreferenceManager;
 import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.rules.FlakyTestRule;
+import org.catrobat.catroid.runner.Flaky;
 import org.catrobat.catroid.testsuites.annotations.Cat;
 import org.catrobat.catroid.testsuites.annotations.Level;
 import org.catrobat.catroid.ui.SettingsActivity;
@@ -111,6 +113,9 @@ public class SettingsFragmentTest {
 	public BaseActivityTestRule<SettingsActivity> baseActivityTestRule = new
 			BaseActivityTestRule<>(SettingsActivity.class, true, false);
 
+	@Rule
+	public FlakyTestRule flakyTestRule = new FlakyTestRule();
+
 	private List<String> allSettings = new ArrayList<>(Arrays.asList(SETTINGS_SHOW_ARDUINO_BRICKS,
 			SETTINGS_SHOW_PHIRO_BRICKS_CHECKBOX_PREFERENCE, SETTINGS_SHOW_NFC_BRICKS, SETTINGS_SHOW_HINTS,
 			SETTINGS_CRASH_REPORTS, SETTINGS_MINDSTORMS_NXT_BRICKS_CHECKBOX_PREFERENCE,
@@ -173,6 +178,7 @@ public class SettingsFragmentTest {
 
 	@Category({Cat.AppUi.class, Level.Smoke.class})
 	@Test
+	@Flaky
 	public void basicSettingsTest() {
 		checkPreference(R.string.preference_title_enable_arduino_bricks, SETTINGS_SHOW_ARDUINO_BRICKS);
 

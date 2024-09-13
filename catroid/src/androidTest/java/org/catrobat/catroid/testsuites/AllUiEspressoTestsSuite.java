@@ -24,9 +24,10 @@
 package org.catrobat.catroid.testsuites;
 
 import org.catrobat.catroid.runner.AndroidPackageRunner;
+import org.catrobat.catroid.runner.PackagePath;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidPackageRunner.class)
-@AndroidPackageRunner.PackagePath("org.catrobat.catroid.uiespresso")
+@PackagePath("org.catrobat.catroid.uiespresso")
 public class AllUiEspressoTestsSuite {
 }

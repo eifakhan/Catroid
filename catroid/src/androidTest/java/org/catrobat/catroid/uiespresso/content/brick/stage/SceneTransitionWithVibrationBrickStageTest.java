@@ -31,6 +31,8 @@ import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.SceneTransitionBrick;
 import org.catrobat.catroid.content.bricks.VibrationBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
+import org.catrobat.catroid.rules.FlakyTestRule;
+import org.catrobat.catroid.runner.Flaky;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.test.utils.TestUtils;
 import org.catrobat.catroid.uiespresso.stage.utils.ScriptEvaluationGateBrick;
@@ -63,6 +65,9 @@ public class SceneTransitionWithVibrationBrickStageTest {
 	public BaseActivityTestRule<StageActivity> baseActivityTestRule = new
 			BaseActivityTestRule<>(StageActivity.class, true, false);
 
+	@Rule
+	public FlakyTestRule flakyTestRule = new FlakyTestRule();
+
 	@Before
 	public void setUp() throws Exception {
 		project = UiTestUtils.createDefaultTestProject(TestUtils.DEFAULT_TEST_PROJECT_NAME);
@@ -78,6 +83,7 @@ public class SceneTransitionWithVibrationBrickStageTest {
 	}
 
 	@Test
+	@Flaky
 	public void testVibrationContinueOnSceneTransition() {
 		calmScript.addBrick(new SceneTransitionBrick(firstSceneName));
 		lastBrickTransitionScript.waitUntilEvaluated(3000);

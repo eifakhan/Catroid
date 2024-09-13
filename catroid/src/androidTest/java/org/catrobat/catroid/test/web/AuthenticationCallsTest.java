@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.rules.FlakyTestRule;
 import org.catrobat.catroid.runner.Flaky;
 import org.catrobat.catroid.test.utils.TestUtils;
 import org.catrobat.catroid.testsuites.annotations.Cat;
@@ -37,6 +38,7 @@ import org.catrobat.catroid.web.ServerAuthenticator.TaskListener;
 import org.catrobat.catroid.web.WebConnectionException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -79,6 +81,9 @@ public class AuthenticationCallsTest implements DeleteTestUserTask.OnDeleteTestU
 	private String testEmail;
 	private TaskListener listenerMock;
 	private SharedPreferences sharedPreferences;
+
+	@Rule
+	public FlakyTestRule flakyTestRule = new FlakyTestRule();
 
 	@Before
 	public void setUp() throws Exception {

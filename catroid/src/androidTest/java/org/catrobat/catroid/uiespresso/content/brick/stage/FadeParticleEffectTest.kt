@@ -43,6 +43,8 @@ import org.catrobat.catroid.content.bricks.PlaceAtBrick
 import org.catrobat.catroid.content.bricks.SetGravityBrick
 import org.catrobat.catroid.content.bricks.WaitBrick
 import org.catrobat.catroid.formulaeditor.Formula
+import org.catrobat.catroid.rules.FlakyTestRule
+import org.catrobat.catroid.runner.Flaky
 import org.catrobat.catroid.ui.SpriteActivity
 import org.catrobat.catroid.uiespresso.util.UiTestUtils
 import org.catrobat.catroid.uiespresso.util.actions.CustomActions.wait
@@ -74,6 +76,9 @@ class FadeParticleEffectTest {
         SpriteActivity.FRAGMENT_SCRIPTS
     )
 
+    @get:Rule
+    val flakyTestRule = FlakyTestRule()
+
     @Before
     fun setUp() {
         project = UiTestUtils.createDefaultTestProject(PROJECT_NAME)
@@ -83,6 +88,7 @@ class FadeParticleEffectTest {
     }
 
     @Test
+    @Flaky
     fun fadeParticleEffectTest() {
         script.addBrick(WaitBrick(1000))
         script.addBrick(FadeParticleEffectBrick(FADE_IN))

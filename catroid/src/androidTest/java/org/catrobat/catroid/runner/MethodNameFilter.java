@@ -21,13 +21,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.catrobat.catroid.testsuites;
+package org.catrobat.catroid.runner;
 
-import org.catrobat.catroid.runner.AndroidPackageRunner;
-import org.catrobat.catroid.runner.PackagePath;
-import org.junit.runner.RunWith;
+import org.junit.runner.Description;
+import org.junit.runner.manipulation.Filter;
 
-@RunWith(AndroidPackageRunner.class)
-@PackagePath("org.catrobat.catroid.test")
-public class AllHeadlessTestsSuite {
+import java.util.List;
+
+public class MethodNameFilter extends Filter {
+	private final List<Test> methods;
+
+	public MethodNameFilter(List<Test> methods)	{
+		super();
+		this.methods = methods;
+	}
+
+	@Override
+	public boolean shouldRun(Description description) {
+		String methodName = description.getMethodName();
+		int paramIndex = methodName.indexOf("[");
+		if (paramIndex != -1) {
+			methodName = methodName.replace(methodName.substring(paramIndex), "");
+		}
+		String finalMethodName = methodName;
+
+		return methods.stream().anyMatch(t -> finalMethodName.contentEquals(t.getMethodName()));
+	}
+
+	@Override
+	public String describe() {
+		return "custom method name filter";
+	}
 }

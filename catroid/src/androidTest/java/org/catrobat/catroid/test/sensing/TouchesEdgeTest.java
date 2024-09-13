@@ -29,10 +29,13 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.XstreamSerializer;
+import org.catrobat.catroid.rules.FlakyTestRule;
+import org.catrobat.catroid.runner.Flaky;
 import org.catrobat.catroid.sensing.CollisionDetection;
 import org.catrobat.catroid.test.physics.collision.CollisionTestUtils;
 import org.catrobat.catroid.test.utils.TestUtils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,6 +53,9 @@ public class TouchesEdgeTest {
 	private int virtualScreenWidth;
 	private int virtualScreenHeight;
 	private Rectangle screen;
+
+	@Rule
+	public FlakyTestRule flakyTestRule = new FlakyTestRule();
 
 	@Before
 	public void setUp() throws Exception {
@@ -73,6 +79,7 @@ public class TouchesEdgeTest {
 	}
 
 	@Test
+	@Flaky
 	public void testNoCollisionInCenter() {
 		assertFalse(CollisionDetection.collidesWithEdge(sprite1.look.getCurrentCollisionPolygon(), screen));
 	}

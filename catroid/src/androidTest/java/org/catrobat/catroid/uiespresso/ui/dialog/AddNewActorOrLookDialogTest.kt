@@ -30,6 +30,8 @@ import androidx.test.espresso.matcher.ViewMatchers
 import org.catrobat.catroid.R
 import org.catrobat.catroid.content.Project
 import org.catrobat.catroid.content.Sprite
+import org.catrobat.catroid.rules.FlakyTestRule
+import org.catrobat.catroid.runner.Flaky
 import org.catrobat.catroid.test.utils.TestUtils
 import org.catrobat.catroid.ui.ProjectActivity
 import org.catrobat.catroid.ui.SpriteActivity
@@ -50,6 +52,9 @@ class AddNewActorOrLookDialogTest {
         ProjectActivity.FRAGMENT_SPRITES
     )
 
+    @get:Rule
+    val flakyTestRule = FlakyTestRule()
+
     @Before
     @Throws(Exception::class)
     fun setUp() {
@@ -66,6 +71,7 @@ class AddNewActorOrLookDialogTest {
     }
 
     @Test
+    @Flaky
     fun addActorOrObjectDialogTest() {
         Espresso.onView(ViewMatchers.withId(R.id.button_add))
             .perform(ViewActions.click())

@@ -41,6 +41,8 @@ import org.catrobat.catroid.R
 import org.catrobat.catroid.WaitForConditionAction.Companion.waitFor
 import org.catrobat.catroid.common.SharedPreferenceKeys.NEW_SPRITE_VISUAL_PLACEMENT_KEY
 import org.catrobat.catroid.content.Project
+import org.catrobat.catroid.rules.FlakyTestRule
+import org.catrobat.catroid.runner.Flaky
 import org.catrobat.catroid.ui.ProjectActivity
 import org.catrobat.catroid.ui.ProjectActivity.Companion.EXTRA_FRAGMENT_POSITION
 import org.catrobat.catroid.ui.ProjectActivity.Companion.FRAGMENT_SPRITES
@@ -66,6 +68,9 @@ class SpriteListFragmentNoObjectTest {
         FRAGMENT_SPRITES
     )
 
+    @get:Rule
+    val flakyTestRule = FlakyTestRule()
+
     @Before
     @Throws(Exception::class)
     fun setUp() {
@@ -83,6 +88,7 @@ class SpriteListFragmentNoObjectTest {
     }
 
     @Test
+    @Flaky
     fun testOverflowItemsWithNoObjects() {
         checkToastMessageAfterPressingOverflowItem(R.string.backpack)
         checkToastMessageAfterPressingOverflowItem(R.string.copy)
