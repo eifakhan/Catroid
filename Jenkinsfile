@@ -7,7 +7,7 @@ class DockerParameters {
     def args = '--device /dev/kvm:/dev/kvm ' +
             '-m=12G '
     def label = 'LimitedEmulator'
-    def image = 'catrobat/catrobat-android:api33'
+    def image = 'catrobat/catrobat-android:test'
 }
 
 def d = new DockerParameters()
@@ -50,7 +50,14 @@ def runTestsWithEmulator(String testClass) {
 
 def postEmulator(String coverageNameAndLogcatPrefix) {
     archiveArtifacts "${coverageNameAndLogcatPrefix}_emulator.log"
-    zip zipFile: "${coverageNameAndLogcatPrefix}_logcat.zip", dir: "catroid/build/outputs/androidTest-results/connected/flavors/", archive: true
+    
+    def zipDir = "catroid/build/outputs/androidTest-results/connected/flavors/"
+    if (!fileExists(zipDir)) {
+        echo "Directory '${zipDir}' does not exist. Creating it now..."
+        sh "mkdir -p ${zipDir}"
+    }
+
+    zip zipFile: "${coverageNameAndLogcatPrefix}_logcat.zip", dir: zipDir, archive: true
     def jacocoReportDir = 'catroid/build/reports/coverage/androidTest/catroid/debug/connected'
     if (fileExists('catroid/build/reports/coverage/androidTest/catroid/debug/connected/report.xml')) {
         junitAndCoverage jacocoReportDir, 'report.xml', coverageNameAndLogcatPrefix
@@ -115,6 +122,10 @@ pipeline {
     environment {
         ANDROID_VERSION = 33
         ADB_INSTALL_TIMEOUT = 60
+        REPO = 'Catrobat/Catroid'
+        TOKEN = credentials('001159e0-8b13-44fc-a41e-6717b4500acd')
+        ARTIFACT_PATH = '**/*.apk'
+        VERSION = "${env.BUILD_NUMBER}"
     }
 
     parameters {
@@ -169,6 +180,7 @@ pipeline {
         booleanParam name: 'RTL_TESTS', defaultValue: true, description: 'Enables RTL Tests'
         booleanParam name: 'OUTGOING_NETWORK_CALL_TESTS', defaultValue: false, description: 'Enables' +
                 'start Outgoing web tests'
+		booleanParam name: 'RELEASE_APK', defaultValue: true, description: 'Enables release creation and apk upload'
     }
 
     options {
@@ -215,7 +227,6 @@ pipeline {
                                         }
                                     }
 
-                                    sh 'rm -rf Paintroid'
                                     // Build the flavors so that they can be installed next independently of older versions.
                                     sh "./gradlew ${webTestUrlParameter()} -Pindependent='#$env.BUILD_NUMBER $env.BRANCH_NAME' assembleCatroidDebug ${allFlavoursParameters()}"
 
@@ -224,7 +235,7 @@ pipeline {
                                 }
                             }
                         }
-
+                        
                         stage('Build with Paintroid') {
                             when {
                                 expression {
@@ -370,6 +381,28 @@ pipeline {
                                 always {
                                     killRunningEmulator()
                                     postEmulator('rtltests')
+                                }
+                            }
+                        }
+
+                        stage('Release to GitHub') {
+                            when {
+                                expression { params.RELEASE_APK == true }
+                            }
+                            steps {
+                                script {
+                                    
+                                    def apkFile = findFiles(glob: '**/*.apk')[0].path
+                                    sh 'chmod +x ./automationScripts/create_release.sh'
+                                    sh """
+                                    #!/bin/bash
+                                    if [ -s "$apkFile" ]; then
+                                        ./automationScripts/create_release.sh "$REPO" "$TOKEN" "$apkFile" "$VERSION"
+                                    else
+                                        echo "Artifact not found or empty at path: $apkFile"
+                                        exit 1
+                                    fi
+                                    """
                                 }
                             }
                         }
